@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flash Cards</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<script src="constructors.js"></script>
+</head>
+<body>
+
+<div class="container">
+	<div class="jumbotron">
+		<h1 style="text-align: center;">Flash Cards!</h3>
+	</div>
+	<div class="col-md-12">
+		<h3>Select one of the flash cards:</h3>
+	</div>
+	<div class="col-md-12">
+		<h3 id="data"></h3>
+	</div>
+	<div class="col-md-4">
+		<button id="cloze-button"><h2>Cloze Text</h2></button>
+	</div>
+	<div class="col-md-4">
+		<button id="part-button"><h2>Partial Text</h2></button>
+	</div>
+	<div class="col-md-4">
+		<button id="full-button"><h2>Full Text</h2></button>
+	</div>
+	<div class="col-md-12">
+		<h2 id="output"></h2>
+	</div>
+</div>
+
+
+</body>
+
+<script type="text/javascript">
+	var json = [{	"text": "Washington was the first president.",	"cloze": "Washington"},{	"text": "Holdens ship is the Rocinante in The Expanse.",	"cloze": "Rocinante"},{	"text": "Fred Johnsons HQ is at Tycho Station",	"cloze": "Tycho Station"}];
+
+	// var val = eval('(' + json + ')');
+	
+	var dropdown = document.getElementById("data");
+	var selector = document.createElement("SELECT");
+	// $("select").attr('id','data-current');
+
+	for (i = 0; i < 3; i++){
+		// items.push("<li>" + val.text + "</li>");
+		
+		var opt = document.createElement("option");
+		var show = new ClozeCard(json[i].text, json[i].cloze);
+		console.log(show);
+		var part = show.showPartial();
+		console.log(part);
+		// var full = show.showFull();
+
+		var cloze = show.showCloze();
+		opt.text = part;
+		opt.value = cloze;
+		selector.options.add(opt);
+		console.log(selector);
+	}
+
+	dropdown.appendChild(selector);
+
+	$("#cloze-button").on("click", function(){		 
+		var value = $("select :selected").val();
+		$("#output").text(value);
+	});
+
+	$("#part-button").on("click", function(){
+		var current = $("select :selected").text(); 
+		$("#output").text(current);
+	});
+	$("#full-button").on("click", function(){
+		// var fullText = $("select :selected").
+		// $("#output").text(full);
+		var value = $("select :selected").val();
+		var current = $("select :selected").text(); 
+		var fullText = current.replace(" ... ", value);
+		$("#output").text(fullText);
+
+	});
+</script>
+
+</html>
